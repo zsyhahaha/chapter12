@@ -1,0 +1,29 @@
+十二章总结：
+1.拷贝构造函数：C++中拷贝构造函数调用时机通常有三种情况
+	使用一个已经创建完毕的对象来初始化一个新对象
+	值传递的方式给函数参数传值
+	以值方式返回局部对象
+2.深拷贝与浅拷贝：
+	浅拷贝：简单的赋值拷贝操作
+	深拷贝：在堆区重新申请空间，进行拷贝操作
+String1::String1(const char * s)
+{
+    len = std::strlen(s);
+    str = new char[len + 1];//深拷贝，重新申请一块内存
+    std::strcpy(str,s);
+    num_strings++;
+}
+3.赋值运算符与内存分配：如果类中有属性指向堆区，做赋值操作时也会出现深浅拷贝问题
+String1 & String1::operator = (const String1 &st)
+{
+    if(this == &st)
+        return *this;
+    delete [] str;
+    len = st.len;
+    str = new char[len + 1];
+    std::strcpy(str,st.str);
+    return *this;
+}4.构造函数动态内存分配：
+	在构造函数中使用new，析构函数必须delete
+	构造函数new和new[]不能混用，应为析构函数只有一个，由析构函数来确定new和new[]
+	
